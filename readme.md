@@ -1,0 +1,1 @@
+Content Editable is a simple in-editor text area with some local storage for quick access to notes. 
