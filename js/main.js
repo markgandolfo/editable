@@ -49,7 +49,7 @@ window.onload = function() {
     if(filename.value != "") {
       localStorage.setItem(filename.value + "_editables", content.innerHTML);
       saved = true;
-      say("Success", filename.value + " saved successfully", "success")          
+      say("Success", filename.value + " saved successfully", "success");
     } else {
       $('#nameModal').modal('show');
     }
@@ -60,6 +60,7 @@ window.onload = function() {
       content.innerHTML = "";
       editable_select.selectedIndex = 0;
       filename.value = "";
+      set_title();
     }
   });
 
@@ -67,6 +68,7 @@ window.onload = function() {
     value = document.getElementById('modal_filename').value;
     if(value != "") {
       filename.value = value;
+      set_title();
       $('#nameModal').modal('hide');
       localStorage.setItem(filename.value + "_editables", content.innerHTML);
       saved = true;
@@ -77,7 +79,17 @@ window.onload = function() {
   function load_editable() {
     var key = editable_select.options[editable_select.selectedIndex].text;
     filename.value = key;
+    set_title();
     content.innerHTML = localStorage.getItem(key + "_editables");
+    first_click = false;
+  }
+
+  function set_title() {
+    if(filename.value == "") {
+      document.title = "Content Editable";
+    } else {
+      document.title = filename.value + " - Content Editable";
+    }
   }
 
   function say(title,message,color) {
