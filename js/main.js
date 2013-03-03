@@ -7,6 +7,14 @@ window.onload = function() {
   var content = document.getElementById("content");
   var filename = document.getElementById("filename");
   var saved = false;
+  var first_click = true;
+
+  content.addEventListener("focus", function() {
+    if(first_click) {
+      first_click = false;
+      content.innerHTML = "";  
+    }    
+  });
 
   content.addEventListener("onkeypress", function() {
     saved = false;
@@ -59,8 +67,10 @@ window.onload = function() {
     value = document.getElementById('modal_filename').value;
     if(value != "") {
       filename.value = value;
-      $('#nameModal').modal('hide');  
-      say("Success", filename.value + " saved successfully", "success")          
+      $('#nameModal').modal('hide');
+      localStorage.setItem(filename.value + "_editables", content.innerHTML);
+      saved = true;
+      say("Success", filename.value + " saved successfully", "success");
     }
   });
 
