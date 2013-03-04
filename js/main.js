@@ -1,13 +1,12 @@
 window.onload = function() {
 
-  // $('#myModal').modal('show');
-
   var form = document.getElementById("form_editables");
   var saved_editables = document.getElementById("saved_editables");
-  var content = document.getElementById("content");
+  content = document.getElementById("content");
   var filename = document.getElementById("filename");
   var myTab = document.getElementById('myTab');
   var saved = false;
+  current_active_tab = 'new';
 
   tabs = {
     'new': {
@@ -90,22 +89,31 @@ window.onload = function() {
 
   function load_editable(name) {
     add_tab(name);
-    content.innerHTML = localStorage.getItem(name + "_editables");
-    first_click = false;
+    switch_tab(name);
   }
 
   function add_tab(name) {
       tabs[name] = {'content':localStorage.getItem(name + "_editables"), 'edited':false};
 
       var li=document.createElement("li");
-      var a=document.createElement("a");
-
       li.className = "active"
+
+      var a=document.createElement("a");      
       a.setAttribute('data-name', name);
       a.setAttribute('href', '#');
       a.innerHTML = name;
-
       li.appendChild(a);
+
+      var close_link = document.createElement('a');
+      close_link.setAttribute('data-name', name);
+      close_link.setAttribute('data-action','close');
+      close_link.setAttribute('href', '#');
+      close_link.innerHTML = " x"
+      close_link.addEventListener('click', function() {
+        close_tab_if_saved(name);
+      });
+      a.appendChild(close_link);
+
       myTab.appendChild(li);
 
       a.addEventListener('click', function(e) {
@@ -114,10 +122,36 @@ window.onload = function() {
       });
   }
 
-  function switch_tab(that) {
-    name = that.getAttribute('data-name')
+  function close_tab_if_saved(name) {
+    if(!tabs[name]['edited']) {
+      if(confirm("would you like to save first?")) {
+        save_tab(name);
+      }
+    } 
+  }
+
+function isElement(o){
+  return (
+    typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+    o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
+);
+}
+
+
+  function save_tab(name) {
+    localStorage.setItem(name, tabs[name]['content']);
+  }
+
+  function switch_tab(name) {
+
+    if(isElement(name)) {
+      name = name.getAttribute('data-name');
+    }
+
+    tabs[current_active_tab]['content'] = content.innerHTML;
     content.innerHTML = tabs[name]['content'];
     content.setAttribute('data-name', name);
+    current_active_tab = name;
   }
 
   function set_title() {
