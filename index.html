@@ -14,13 +14,7 @@
         <div class="wrapper">
           <a class="brand" href="#">Content Editable</a>
           <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active">
-                <form class="navbar-form pull-left">
-                  <input class="span2" id="filename" name="filename" placeholder="Note Name"/>
-                </form>
-              </li>
-              
+            <ul class="nav">              
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   File
@@ -30,20 +24,27 @@
                   <li><a href="#" id="new">New</a></li>
                   <li class="divider"></li>
                   <li><a href="#" id="save">Save</a></li>
+                  <li class="dropdown-submenu">
+                    <a href="#">Open</a>
+                    <ul id="saved_editables" class="dropdown-menu">
+                    </ul>
+                  </li>
                 </ul>
               </li>
             </ul>
-
-            <form id="form_editables" name="form_editables" class="navbar-form pull-right">
-              <select id="editables"><option>Choose a saved Editable</option></select>
-              <input type="submit" value="Load" class="btn"/>
-            </form>
-
+        
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
+    <div class="wrapper">
+      <div class="tabs">
+        <ul class="nav nav-tabs navbar-inverse" id="myTab">
+          <li class="active"><a href="#home">New</a></li>
+        </ul>
+      </div>
+    </div>
     <div class="wrapper">
   		<div id="content" contenteditable>Start typing your note in here. It'll be stored to your local-storage on your browser. Simple as that!</div>
     </div>

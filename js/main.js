@@ -3,11 +3,17 @@ window.onload = function() {
   // $('#myModal').modal('show');
 
   var form = document.getElementById("form_editables");
-  var editable_select = document.getElementById("editables");
+  var saved_editables = document.getElementById("saved_editables");
   var content = document.getElementById("content");
   var filename = document.getElementById("filename");
+  var myTab = document.getElementById('myTab');
   var saved = false;
   var first_click = true;
+
+  window.onresize = function(event) { 
+    content.style.height= window.innerHeight - 100;
+  }
+  content.style.height= window.innerHeight - 100;
 
   content.addEventListener("focus", function() {
     if(first_click) {
@@ -20,30 +26,45 @@ window.onload = function() {
     saved = false;
   });
 
-  content.style.height= window.innerHeight - 100;
 
   for (var key in localStorage){
     if(key.indexOf("_editables") > 0) {
-      var option=document.createElement("option");
+      var li=document.createElement("li");
+      var a=document.createElement("a");
+
       name = key.substring(0,key.indexOf("_editables"));
-      option.text = name;
-      option.value = name;
-      editable_select.add(option,null);
+      a.setAttribute('data-name', name);
+      a.setAttribute('href', '#');
+      a.innerHTML = name;
+      li.appendChild(a);
+      saved_editables.appendChild(li);
+
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+          if(content.innerHTML == "") {
+            load_editable(this);
+          } else if(confirm("Loading new content will replace the content in the editable area. Are you sure you want to do this?")) {
+            load_editable(this);
+          }        
+      });
     }
   }
 
-  window.onresize = function(event) { 
-    content.style.height= window.innerHeight - 100;
-  }
 
-  form.addEventListener("submit", function(e) {
+  // form.addEventListener("submit", function(e) {
+  //   e.preventDefault();
+  //   if(content.innerHTML == "") {
+  //     load_editable();
+  //   } else if(confirm("Loading new content will replace the content in the editable area. Are you sure you want to do this?")) {
+  //     load_editable();
+  //   }
+  // });
+
+  $('#myTab a').click(function (e) {
     e.preventDefault();
-    if(content.innerHTML == "") {
-      load_editable();
-    } else if(confirm("Loading new content will replace the content in the editable area. Are you sure you want to do this?")) {
-      load_editable();
-    }
-  });
+    $(this).tab('show');
+    console.log(this);
+  })
 
   document.getElementById("save").addEventListener("click", function () {
     if(filename.value != "") {
@@ -76,12 +97,30 @@ window.onload = function() {
     }
   });
 
-  function load_editable() {
-    var key = editable_select.options[editable_select.selectedIndex].text;
-    filename.value = key;
-    set_title();
+  function load_editable(that) {
+    key = that.getAttribute('data-name');
+    add_tab(that);
     content.innerHTML = localStorage.getItem(key + "_editables");
     first_click = false;
+  }
+
+  function add_tab(that) {
+      name = that.getAttribute('data-name');
+      var li=document.createElement("li");
+      var a=document.createElement("a");
+
+      li.className = "active"
+      a.setAttribute('data-name', name);
+      a.setAttribute('href', '#');
+      a.innerHTML = name;
+
+      li.appendChild(a);
+      myTab.appendChild(li);
+
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+      });
   }
 
   function set_title() {

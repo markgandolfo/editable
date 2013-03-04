@@ -7,8 +7,17 @@ body {
 }
 
 #content {
-	margin-top: 60px;
+	/*margin-top: 60px;*/
+	overflow: scroll;
+	padding:10px 20px;
+	background: #fff;
+	border-radius: 2px;
 }
+
+#content:focus {
+    outline: none;
+}
+
 
 .alert {
 	font-size: .8em;
@@ -17,3 +26,14 @@ body {
 	.alert h4 {
 		font-size: .9em;
 	}
+
+.tabs {
+	margin-top: 40px;
+	/*position: absolute;*/
+	background: #ddd;
+}
+
+.tabs ul {
+	margin-bottom: 0;
+	margin-left: 10px;
+}
