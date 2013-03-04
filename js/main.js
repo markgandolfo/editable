@@ -8,7 +8,13 @@ window.onload = function() {
   var filename = document.getElementById("filename");
   var myTab = document.getElementById('myTab');
   var saved = false;
-  var first_click = true;
+
+  tabs = {
+    'new': {
+      'content':'Start typing your note in here. It\'ll be stored to your local-storage on your browser. Simple as that!',
+      'edited':false
+    }
+  };
 
   window.onresize = function(event) { 
     content.style.height= window.innerHeight - 100;
@@ -26,13 +32,12 @@ window.onload = function() {
     saved = false;
   });
 
-
   for (var key in localStorage){
     if(key.indexOf("_editables") > 0) {
       var li=document.createElement("li");
       var a=document.createElement("a");
 
-      name = key.substring(0,key.indexOf("_editables"));
+      var name = key.substring(0,key.indexOf("_editables"));
       a.setAttribute('data-name', name);
       a.setAttribute('href', '#');
       a.innerHTML = name;
@@ -41,30 +46,16 @@ window.onload = function() {
 
       a.addEventListener('click', function(e) {
         e.preventDefault();
-          if(content.innerHTML == "") {
-            load_editable(this);
-          } else if(confirm("Loading new content will replace the content in the editable area. Are you sure you want to do this?")) {
-            load_editable(this);
-          }        
+        load_editable(this.getAttribute("data-name"));
       });
     }
   }
 
-
-  // form.addEventListener("submit", function(e) {
-  //   e.preventDefault();
-  //   if(content.innerHTML == "") {
-  //     load_editable();
-  //   } else if(confirm("Loading new content will replace the content in the editable area. Are you sure you want to do this?")) {
-  //     load_editable();
-  //   }
-  // });
-
   $('#myTab a').click(function (e) {
     e.preventDefault();
-    $(this).tab('show');
-    console.log(this);
-  })
+    switch_tab(this);
+  });
+  content.innerHTML = tabs['new']['content'];
 
   document.getElementById("save").addEventListener("click", function () {
     if(filename.value != "") {
@@ -97,15 +88,15 @@ window.onload = function() {
     }
   });
 
-  function load_editable(that) {
-    key = that.getAttribute('data-name');
-    add_tab(that);
-    content.innerHTML = localStorage.getItem(key + "_editables");
+  function load_editable(name) {
+    add_tab(name);
+    content.innerHTML = localStorage.getItem(name + "_editables");
     first_click = false;
   }
 
-  function add_tab(that) {
-      name = that.getAttribute('data-name');
+  function add_tab(name) {
+      tabs[name] = {'content':localStorage.getItem(name + "_editables"), 'edited':false};
+
       var li=document.createElement("li");
       var a=document.createElement("a");
 
@@ -119,8 +110,14 @@ window.onload = function() {
 
       a.addEventListener('click', function(e) {
         e.preventDefault();
-        
+        switch_tab(a);
       });
+  }
+
+  function switch_tab(that) {
+    name = that.getAttribute('data-name')
+    content.innerHTML = tabs[name]['content'];
+    content.setAttribute('data-name', name);
   }
 
   function set_title() {
