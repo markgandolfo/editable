@@ -20,13 +20,6 @@ window.onload = function() {
   }
   content.style.height= window.innerHeight - 100;
 
-  content.addEventListener("focus", function() {
-    if(first_click) {
-      first_click = false;
-      content.innerHTML = "";  
-    }    
-  });
-
   content.addEventListener("onkeypress", function() {
     saved = false;
   });
@@ -57,12 +50,12 @@ window.onload = function() {
   content.innerHTML = tabs['new']['content'];
 
   document.getElementById("save").addEventListener("click", function () {
-    if(filename.value != "") {
-      localStorage.setItem(filename.value + "_editables", content.innerHTML);
+    if(current_active_tab == 'new') {
+      $('#nameModal').modal('show');
+    } else {
+      localStorage.setItem(current_active_tab.value + "_editables", content.innerHTML);
       saved = true;
       say("Success", filename.value + " saved successfully", "success");
-    } else {
-      $('#nameModal').modal('show');
     }
   });
 
@@ -78,12 +71,12 @@ window.onload = function() {
   document.getElementById('save_modal_button').addEventListener('click', function() {
     value = document.getElementById('modal_filename').value;
     if(value != "") {
-      filename.value = value;
-      set_title();
-      $('#nameModal').modal('hide');
-      localStorage.setItem(filename.value + "_editables", content.innerHTML);
-      saved = true;
-      say("Success", filename.value + " saved successfully", "success");
+      current_active_tab = value;
+      //set_title();
+      //$('#nameModal').modal('hide');
+      localStorage.setItem(value + "_editables", content.innerHTML);
+      //saved = true;
+      say("Success", value + " saved successfully", "success");
     }
   });
 
@@ -96,7 +89,8 @@ window.onload = function() {
       tabs[name] = {'content':localStorage.getItem(name + "_editables"), 'edited':false};
 
       var li=document.createElement("li");
-      li.className = "active"
+      li.className = "active";
+      li.setAttribute('data-name',name);
 
       var a=document.createElement("a");      
       a.setAttribute('data-name', name);
@@ -110,7 +104,7 @@ window.onload = function() {
       close_link.setAttribute('href', '#');
       close_link.innerHTML = " x"
       close_link.addEventListener('click', function() {
-        close_tab_if_saved(name);
+        close_tab_and_save(name);
       });
       a.appendChild(close_link);
 
@@ -122,20 +116,22 @@ window.onload = function() {
       });
   }
 
-  function close_tab_if_saved(name) {
-    if(!tabs[name]['edited']) {
-      if(confirm("would you like to save first?")) {
-        save_tab(name);
-      }
-    } 
+  function close_tab_and_save(name) {
+    save_tab(name);
+    close_tab(name);
   }
 
-function isElement(o){
-  return (
-    typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-    o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
-);
-}
+  function close_tab(name) {
+    $('.tabs li[data-name='+name+']').remove();
+    switch_tab($('.tabs li a')[0].getAttribute('data-name'));
+  }
+
+  function isElement(o){
+    return (
+      typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+      o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
+  );
+  }
 
 
   function save_tab(name) {
