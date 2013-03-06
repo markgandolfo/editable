@@ -33,7 +33,41 @@ body {
 	background: #ddd;
 }
 
+.tabs .inactive {
+	background: #eee;
+	border-right: 1px solid #ddd;
+}
+
+.tabs .inactive a {
+		color: #333;
+}
+
 .tabs ul {
 	margin-bottom: 0;
 	margin-left: 10px;
+}
+
+.nav>li>a {
+	display: inline-block;
+	padding-right: 5px;
+	margin-right: 0;
+	border-right: 0;
+}
+
+.tabs>.active>a:hover, .nav-tabs>.active>a:focus, .nav-tabs>.active>a {
+	border: 0 !important;
+	border-radius: 0;
+	border-color: #fff;
+	text-decoration: none;
+}
+
+.tabs>.inactive a:hover {
+	border: 0;
+}
+
+.tabs li {
+	border-radius: 4px 4px 0 0;
+	border: 1px solid #fff;
+	padding: 5px;
+	background: #fff;
 }

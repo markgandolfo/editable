@@ -43,7 +43,7 @@ window.onload = function() {
     }
   }
 
-  $('#myTab a').click(function (e) {
+  $('#myTab a.tab').click(function (e) {
     e.preventDefault();
     switch_tab(this);
   });
@@ -60,13 +60,16 @@ window.onload = function() {
   });
 
   document.getElementById("new").addEventListener("click", function() {
-    if(saved || content.innerHTML != "" && confirm("You'll loose any changes you've made that are unsaved! Are you sure?")) {
+    if(saved || content.innerHTML != "" && confirm("You'll loose any changes you've made that are unsaved in the new tab! Are you sure?")) {
+      switch_tab('new');
       content.innerHTML = "";
-      editable_select.selectedIndex = 0;
-      filename.value = "";
-      set_title();
+      tabs['new']['content'] = '';
     }
   });
+
+  // document.getElementById('.tab').addEventListener('ondblclick', function() {
+  //   console.log('double click bitches');
+  // });
 
   document.getElementById('save_modal_button').addEventListener('click', function() {
     value = document.getElementById('modal_filename').value;
@@ -75,10 +78,10 @@ window.onload = function() {
       //set_title();
       //$('#nameModal').modal('hide');
       localStorage.setItem(value + "_editables", content.innerHTML);
-      //saved = true;
       say("Success", value + " saved successfully", "success");
     }
   });
+}
 
   function load_editable(name) {
     add_tab(name);
@@ -86,53 +89,54 @@ window.onload = function() {
   }
 
   function add_tab(name) {
-      tabs[name] = {'content':localStorage.getItem(name + "_editables"), 'edited':false};
+    tabs[name] = {'content':localStorage.getItem(name + "_editables"), 'edited':false};
 
-      var li=document.createElement("li");
-      li.className = "active";
-      li.setAttribute('data-name',name);
+    var li=document.createElement("li");
+    li.className = "active";
+    li.setAttribute('data-name',name);
 
-      var a=document.createElement("a");      
-      a.setAttribute('data-name', name);
-      a.setAttribute('href', '#');
-      a.innerHTML = name;
-      li.appendChild(a);
+    var a=document.createElement("a");      
+    a.setAttribute('data-name', name);
+    a.setAttribute('href', '#');
+    a.className = 'tab';
+    a.innerHTML = name;
+    li.appendChild(a);
 
-      var close_link = document.createElement('a');
-      close_link.setAttribute('data-name', name);
-      close_link.setAttribute('data-action','close');
-      close_link.setAttribute('href', '#');
-      close_link.innerHTML = " x"
-      close_link.addEventListener('click', function() {
-        close_tab_and_save(name);
-      });
-      a.appendChild(close_link);
+    var close_link = document.createElement('a');
+    close_link.setAttribute('data-name', name);
+    close_link.setAttribute('data-action','close');
+    close_link.setAttribute('href', '#');
+    close_link.innerHTML = " x"
+    close_link.addEventListener('click', function() {
+      close_tab_and_save(name);
+    });
+    li.appendChild(close_link);
 
-      myTab.appendChild(li);
+    myTab.appendChild(li);
 
-      a.addEventListener('click', function(e) {
-        e.preventDefault();
-        switch_tab(a);
-      });
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      switch_tab(a);
+    });
   }
 
   function close_tab_and_save(name) {
     save_tab(name);
+    switch_tab('new');
     close_tab(name);
+    delete tabs[name];
   }
 
   function close_tab(name) {
     $('.tabs li[data-name='+name+']').remove();
-    switch_tab($('.tabs li a')[0].getAttribute('data-name'));
   }
 
   function isElement(o){
     return (
       typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
       o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
-  );
+    );
   }
-
 
   function save_tab(name) {
     localStorage.setItem(name, tabs[name]['content']);
@@ -144,10 +148,20 @@ window.onload = function() {
       name = name.getAttribute('data-name');
     }
 
-    tabs[current_active_tab]['content'] = content.innerHTML;
+    if(tabs[current_active_tab]) {
+      tabs[current_active_tab]['content'] = content.innerHTML;  
+    }
+    
     content.innerHTML = tabs[name]['content'];
     content.setAttribute('data-name', name);
     current_active_tab = name;
+
+    li_tabs = document.querySelectorAll('li[data-name]')
+    for (var i = 0; i < li_tabs.length; i++) {
+      li_tabs[i].className = 'inactive';
+    }
+
+    document.querySelector('li[data-name='+name+']').className = 'active';
   }
 
   function set_title() {
@@ -169,4 +183,3 @@ window.onload = function() {
     },5000);
   }
 
-}
