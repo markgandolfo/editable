@@ -71,3 +71,7 @@ body {
 	padding: 5px;
 	background: #fff;
 }
+
+.nav-tabs>li>a {
+	padding-left: 8px;
+}

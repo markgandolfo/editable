@@ -41,12 +41,11 @@
     <div class="wrapper">
       <div class="tabs">
         <ul class="nav nav-tabs navbar-inverse" id="myTab">
-          <li data-name='new' class="active"><a data-name="new" href="#" class='tab'>New</a></li>
         </ul>
       </div>
     </div>
     <div class="wrapper">
-  		<div id="content" data-name="new" contenteditable></div>
+  		<div id="content" data-name="scratch" contenteditable></div>
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
@@ -66,6 +65,22 @@
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
         <input id="save_modal_button" class="btn btn-primary" value="Save changes"/>
+      </div>
+    </div>
+
+    <!-- rename -->
+    <div id="renameModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="nameModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3>Name your editable</h3>
+      </div>
+      <div class="modal-body">
+        <p>What would you like to name your editable? You can use this to view it later</p>
+        <input id="modal_name" type="input" name="filename"></input>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <input id="save_rename_button" class="btn btn-primary" value="Save changes"/>
       </div>
     </div>
 
