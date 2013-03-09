@@ -92,5 +92,9 @@ body {
 	color: #4F8A10;
 	background-color: #b2c198;
 	border: 1px solid #b2c198;
+}
 
+.hint { 
+	margin: 11px;
+	font-size: 15px;
 }

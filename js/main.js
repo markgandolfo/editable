@@ -9,6 +9,8 @@ window.onload = function() {
     }
   };
 
+  hints = ['You can double click a tab to rename it'];
+
   /* 
     When the page loads, lets set up the page and scaffold ContentEditable
   */
@@ -35,6 +37,8 @@ window.onload = function() {
     tabs[name]['content'] = $(this).html();
     save_tab(name);
   });
+
+  $('.hint').html('Hint: ' + hints[Math.floor(Math.random()*hints.length)]);
 
   /*
     Add new Tab 
