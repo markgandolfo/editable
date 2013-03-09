@@ -18,7 +18,6 @@ body {
     outline: none;
 }
 
-
 .alert {
 	font-size: .8em;
 	padding: 2px 2px;
@@ -70,8 +69,36 @@ body {
 	border: 1px solid #fff;
 	padding: 5px;
 	background: #fff;
+	margin-right: 1px;
 }
 
 .nav-tabs>li>a {
 	padding-left: 8px;
+}
+
+.tabs li[data-action=new] a{
+	border-radius: 4px 4px 0 0;
+	padding: 7px;
+}
+
+.tabs li[data-action=new]{
+	color: #4F8A10;
+	background-color: #c8d9ab;
+	border-radius: 4px 4px 0 0;
+	border: 1px solid #DFF2BF;
+}
+
+.tabs li[data-action=new]:hover{
+	color: #4F8A10;
+	background-color: #b2c198;
+	border-radius: 4px 4px 0 0;
+	border: 1px solid #b2c198;
+	cursor: hand;
+}
+
+.tabs li[data-action=new] a:hover{
+	color: #4F8A10;
+	background-color: #b2c198;
+	border: 1px solid #b2c198;
+
 }

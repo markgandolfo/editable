@@ -17,18 +17,10 @@
             <ul class="nav">              
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  File
+                  Open
                   <b class="caret"></b>
                 </a>
-                <ul class="dropdown-menu">
-                  <li><a href="#" id="new">New</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#" id="save">Save</a></li>
-                  <li class="dropdown-submenu">
-                    <a href="#">Open</a>
-                    <ul id="saved_editables" class="dropdown-menu">
-                    </ul>
-                  </li>
+                <ul id="saved_editables" class="dropdown-menu">
                 </ul>
               </li>
             </ul>
@@ -41,6 +33,7 @@
     <div class="wrapper">
       <div class="tabs">
         <ul class="nav nav-tabs navbar-inverse" id="myTab">
+          <li data-action='new'><a href="#">+</a></li>
         </ul>
       </div>
     </div>
@@ -83,6 +76,23 @@
         <input id="save_rename_button" class="btn btn-primary" value="Save changes"/>
       </div>
     </div>
+
+    <!-- Create new -->
+    <div id="newModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="nameModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Name your editable</h3>
+      </div>
+      <div class="modal-body">
+        <p>What would you like to name your editable? You can use this to view it later</p>
+        <input id="save_new_name" type="input" name="filename"></input>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <input id="save_new_button" class="btn btn-primary" value="Save changes"/>
+      </div>
+    </div>
+
 
 
 	</body>

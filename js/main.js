@@ -15,6 +15,8 @@ window.onload = function() {
     }
   };
 
+  unnamed = 1;
+
   window.onresize = function(event) { 
     content.style.height= window.innerHeight - 100;
   }
@@ -24,33 +26,60 @@ window.onload = function() {
   add_tab('scratch', {'close': false});
 
   content.innerHTML = localStorage.getItem('scratch_editable') == null ? tabs['scratch']['content'] : localStorage.getItem('scratch_editable');
+  content.focus();
 
   content.addEventListener('input', function() {
     name = this.getAttribute('data-name');
-    console.log(name);
     tabs[name]['content'] = $(this).html();
-    console.log(name);
     save_tab(name);
-    console.log('saving');
   });
 
-  document.getElementById("save").addEventListener("click", function () {
-    if(current_active_tab == 'scratch') {
-      $('#nameModal').modal('show');
-    } else {
-      localStorage.setItem(current_active_tab.value + "_editables", content.innerHTML);
-      saved = true;
-      say("Success", filename.value + " saved successfully", "success");
+  document.querySelectorAll('li[data-action=new]')[0].addEventListener('click', function() {
+    $('#newModal').modal('show');
+    $('#newModal').on('shown', function() {
+      $('#save_new_name').focus();
+    });
+  });
+
+  $('#newModal').on('hidden', function() {
+    content.focus();
+  });
+
+  $(save_new_name).on('keyup', function(e){
+    if(( e.keyCode == 13 ) && ( document.getElementById('save_new_name').value != "" )){
+      create_new_tab_handler();
+      e.preventDefault();    
     }
   });
 
-  document.getElementById("new").addEventListener("click", function() {
-    if(saved || content.innerHTML != "" && confirm("You'll loose any changes you've made that are unsaved in the new tab! Are you sure?")) {
-      switch_tab('scratch');
-      content.innerHTML = "";
-      tabs['scratch']['content'] = '';
-    }
+  document.getElementById('save_new_button').addEventListener("click", function() {
+    create_new_tab_handler()
   });
+
+  function create_new_tab_handler() {
+    var save_new_name = document.getElementById('save_new_name');
+
+    var name = save_new_name.value;
+    if(name != "") {
+      if(editable_exists(name)) {
+        load_editable(name);
+      } else {
+        add_tab(name, {'close': true});
+        switch_tab(name);
+        save_tab(name);      
+      }
+      $('#newModal').modal('hide');
+      document.getElementById('save_new_name').value = "";
+      add_open_option(name);      
+    }
+  }
+
+  function editable_exists(name) {
+    if(localStorage.getItem(name + '_editables').length > 0) {
+      return true;
+    }
+    return false;
+  }
 
   document.getElementById('save_modal_button').addEventListener('click', function() {
     value = document.getElementById('modal_filename').value;
@@ -123,8 +152,7 @@ window.onload = function() {
       li.appendChild(close_link);      
     }
 
-    myTab.appendChild(li);
-
+    $('#myTab li[data-action=new]').before(li);
     a.addEventListener('dblclick', function() {
       renaming = a.getAttribute('data-name');
       $('#renameModal').modal('show');
@@ -202,20 +230,24 @@ window.onload = function() {
   function load_open_options() {
     for (var key in localStorage){
       if(key.indexOf("_editables") > 0) {
-        var li=document.createElement("li");
-        var a=document.createElement("a");
-
         var name = key.substring(0,key.indexOf("_editables"));
-        a.setAttribute('data-name', name);
-        a.setAttribute('href', '#');
-        a.innerHTML = name;
-        li.appendChild(a);
-        saved_editables.appendChild(li);
-
-        a.addEventListener('click', function(e) {
-          e.preventDefault();
-          load_editable(this.getAttribute("data-name"));
-        });
+        add_open_option(name);
       }
     }
+  }
+
+  function add_open_option(name) {
+    var li=document.createElement("li");
+    var a=document.createElement("a");
+
+    a.setAttribute('data-name', name);
+    a.setAttribute('href', '#');
+    a.innerHTML = name;
+    li.appendChild(a);
+    saved_editables.appendChild(li);
+
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      load_editable(this.getAttribute("data-name"));
+    });
   }
