@@ -7,7 +7,6 @@ body {
 }
 
 #content {
-	/*margin-top: 60px;*/
 	overflow: scroll;
 	padding:10px 20px;
 	background: #fff;
@@ -19,8 +18,7 @@ body {
 }
 
 .tabs {
-	margin-top: 40px;
-	/*position: absolute;*/
+	margin-top: 50px;
 	background: #ddd;
 }
 

@@ -16,9 +16,9 @@ window.onload = function() {
   */
 
   //  Set up the content editable height, and set an event to resize on window resize
-  content.style.height= window.innerHeight - 100;
+  content.style.height= window.innerHeight - 130;
   window.onresize = function(event) { 
-    content.style.height= window.innerHeight - 100;
+    content.style.height= window.innerHeight - 130;
   }
   
   // Load all the open options and set up the initial scratch pad(tab
