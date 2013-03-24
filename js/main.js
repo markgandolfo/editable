@@ -9,7 +9,10 @@ window.onload = function() {
     }
   };
 
-  hints = ['You can double click a tab to rename it'];
+  hints = [
+    'You can double click a tab to rename it', 
+    'As you type, it saves!'
+  ];
 
   /* 
     When the page loads, lets set up the page and scaffold ContentEditable
@@ -208,13 +211,11 @@ function load_open_options() {
 }
 
 function add_open_option(name) {
-  var li=document.createElement("li");
-  var a=document.createElement("a");
+  var li;
 
-  a.setAttribute('data-name', name);
-  a.setAttribute('href', '#');
-  a.innerHTML = name;
-  li.appendChild(a);
+  li = el('li', 
+    a = el('a', {'data-name': name, 'href':'#'}, name)
+  );
   saved_editables.appendChild(li);
 
   a.addEventListener('click', function(e) {
@@ -235,24 +236,17 @@ function add_tab(name, options) {
     'content': tab_content,
     'edited': false
   }
-  
-  var li=document.createElement("li");
-  li.className = "active";
-  li.setAttribute('data-name',name);
 
-  var a=document.createElement("a");      
-  a.setAttribute('data-name', name);
-  a.setAttribute('href', '#');
-  a.className = 'tab';
-  a.innerHTML = name;
-  li.appendChild(a);
+  var li, a;
+
+  li = el('li.active', {'data-name':name}, 
+    a = el('a.tab', {'data-name':name, 'href':'#'}, name)
+  );
 
   if(add_close_link) {
-    var close_link = document.createElement('a');
-    close_link.setAttribute('data-name', name);
-    close_link.setAttribute('data-action','close');
-    close_link.setAttribute('href', '#');
-    close_link.innerHTML = " x"
+    var close_link;
+    
+    close_link = el('a', {'data-name':name, 'data-action':'close', 'href':'#'}, 'x');
     close_link.addEventListener('click', function() {
       close_tab_and_save(this.getAttribute('data-name'));
     });
