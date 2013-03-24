@@ -25,6 +25,10 @@
               </li>
               <li class="text-info hint"></li>
             </ul>
+
+            <ul class="pull-right nav">
+              <li><a href="#" id="dropbox">Dropbox Settings</a></li>
+            </ul>
         
           </div><!--/.nav-collapse -->
         </div>
@@ -44,6 +48,7 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/dropbox.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
     <!-- rename -->
@@ -77,6 +82,23 @@
         <input id="save_new_button" class="btn btn-primary" value="Save changes"/>
       </div>
     </div>
+
+    <!-- Dropbox  -->
+    <div id="dropbox_settings" class="modal hide fade" role="dialog">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h3>Dropbox Settings</h3>
+      </div>
+      <div class="modal-body">
+        <p>Your dropbox settings will be saved to your local storage, therefore you'll need to set it up on every computer you're on.</p>
+        <input id="dropbox_username" type="input" name="filename"></input>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <input id="save_new_button" class="btn btn-primary" value="Save changes"/>
+      </div>
+    </div>
+
 
 	</body>
 </html>
