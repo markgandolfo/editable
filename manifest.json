@@ -1,0 +1,23 @@
+{
+	"manifest_version": 2,
+	"description":		"Content Editable notes",
+	"name":				"Content Editable",
+	"version":			"1",
+	// "options_page":		"html/options.html",
+	"permissions":		["tabs"],
+  "icons": { 
+    "128": "icons/icon_128.png",
+    "16": "icons/icon_16.png"
+  },
+  "app": {
+    "launch": {
+      "local_path": "index.html"
+    }
+  },
+  "permissions": [
+	"tabs",
+    "notifications",
+    "http://*.dropbox.com/",
+    "https://*.dropbox.com/"
+  ]
+}
