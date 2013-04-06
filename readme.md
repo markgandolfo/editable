@@ -1,7 +1,7 @@
 ## Content-Editable
 
 Content Editable is a simple in-editor text area with some local storage for quick access to notes. 
-Check it out at http://http://editable.io/
+Check it out at http://editable.io/
 
 ### How does it work?
 As you type it'll store your text in local storage. Everyone starts with a "scratch" pad they can quickly jot notes down onto, but the ability to add different notes/tabs are available. 
