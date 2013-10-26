@@ -9,7 +9,7 @@ window.onload = function() {
     }
   };
 
-  hints = ['You can double click a tab to rename it'];
+  hints = ['You can double click a tab to rename it', 'closing a tab that has no content will remove it from the list'];
 
   /* 
     When the page loads, lets set up the page and scaffold ContentEditable
@@ -140,7 +140,7 @@ window.onload = function() {
 }
 
   /*
-    Some default functions
+    Some basic functions
   */
 
 function load_editable(name) {
@@ -153,10 +153,22 @@ function close_tab_and_save(name) {
   switch_tab('scratch');
   close_tab(name);
   delete tabs[name];
+  if(is_tab_empty(name) && name != 'scratch') {
+    localStorage.removeItem(name+'_editables');
+    reload_open_options();
+  }
 }
 
 function save_tab(name) {
   localStorage.setItem(name  + '_editables', tabs[name]['content']);
+}
+
+function is_tab_empty(name) {
+  if(localStorage.getItem(name + '_editables') == "") {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function editable_exists(name) {
@@ -221,6 +233,11 @@ function add_open_option(name) {
     e.preventDefault();
     load_editable(this.getAttribute("data-name"));
   });
+}
+
+function reload_open_options() {
+  $('ul#saved_editables').html('');
+  load_open_options();
 }
 
 function add_tab(name, options) {
